@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import styles from './Nav.module.css';
 
 const Navi = styled.nav`
     position: fixed;
@@ -14,6 +15,10 @@ const Navi = styled.nav`
     transition-timing-function: ease-in;
     transition: all 0.5s;
 `;
+
+// const Navi_black = styled(Navi)`
+//     background-color: black;
+// `;
 
 const Avatar = styled.img`
     position: fixed;
@@ -30,8 +35,25 @@ const Logo = styled.img`
 `;
 
 const Nav = () => {
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            console.log(window.scrollY);
+            if (window.scrollY > 50) {
+                setShow(true);
+            } else {
+                setShow(false);
+            }
+        });
+
+        return () => {
+            window.removeEventListener('scroll', () => {});
+        };
+    }, []);
+
     return (
-        <Navi>
+        <Navi className={show ? styles.black : styles.white}>
             <Logo
                 alt="Netflix_logo"
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/170px-Netflix_2015_logo.svg.png"
