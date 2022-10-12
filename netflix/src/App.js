@@ -1,5 +1,4 @@
-import './App.css';
-import Banner from './components/Banner';
+import MainBanner from './components/MainBanner';
 import Nav from './components/Nav';
 
 function App() {
@@ -7,7 +6,7 @@ function App() {
         <div className="App">
             <div>hello</div>
             <Nav />
-            <Banner />
+            <MainBanner />
         </div>
     );
 }
