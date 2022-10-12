@@ -40,6 +40,10 @@ const MainBanner = () => {
         );
     };
 
+    const truncate = (str, n) => {
+        return str?.length > n ? str.substr(0, n - 1) + '...' : str;
+    };
+
     return (
         <Banner
             className={styles.banner}
@@ -66,7 +70,9 @@ const MainBanner = () => {
                         More Infomation
                     </button>
                 </div>
-                <h1>{movie.overview}</h1>
+                <h1 className={styles.banner__description}>
+                    {truncate(movie.overview, 100)}
+                </h1>
             </div>
             <div className={styles.fadeBottom} />
         </Banner>
