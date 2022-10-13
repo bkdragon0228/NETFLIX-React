@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import requests from '../api/requests';
 import styled, { css } from 'styled-components';
 import styles from './Banner.module.css';
+import { NavLink } from 'react-router-dom';
 
 const Banner = styled.header`
     background-image: url(${(props) => props.background});
@@ -13,9 +14,46 @@ const Banner = styled.header`
     height: 448px;
 `;
 
+const Container = styled.div`
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+`;
+
+const HomeContainer = styled.div`
+    width: 100%;
+    height: 100%;
+`;
+
+const Iframe = styled.iframe`
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.65;
+    border: none;
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+`;
+
 const MainBanner = () => {
     const [movie, setMovie] = useState([]);
     const [background, setBackground] = useState('');
+
+    const [isCliked, setIsCliked] = useState(false);
+    const [isVideo, setIsVideo] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -38,45 +76,62 @@ const MainBanner = () => {
         setBackground(
             'https://image.tmdb.org/t/p/original/' + movieDetail.backdrop_path
         );
+
+        if (movieDetail.videos?.results?.length) {
+            setIsVideo(true);
+        }
     };
 
     const truncate = (str, n) => {
         return str?.length > n ? str.substr(0, n - 1) + '...' : str;
     };
 
-    return (
-        <Banner
-            className={styles.banner}
-            background={background}
-            // style={{
-            //     backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie.backdrop_path}")`,
-            //     backgroundPosition: 'top center',
-            //     backgroundSize: 'cover',
-            // }}
-        >
-            <div className={styles.banner__contents}>
-                <h1 className={styles.banner__title}>
-                    {movie.title || movie.name || movie.original_name}
-                </h1>
-                <div className={styles.banner__buttons}>
-                    <button
-                        className={`${styles.banner__button} ${styles.play}`}
-                    >
-                        play
-                    </button>
-                    <button
-                        className={`${styles.banner__button} ${styles.info}`}
-                    >
-                        More Infomation
-                    </button>
+    if (!isCliked) {
+        return (
+            <Banner className={styles.banner} background={background}>
+                <div className={styles.banner__contents}>
+                    <h1 className={styles.banner__title}>
+                        {movie.title || movie.name || movie.original_name}
+                    </h1>
+                    <div className={styles.banner__buttons}>
+                        {isVideo ? (
+                            <button
+                                className={`${styles.banner__button} ${styles.play}`}
+                                onClick={() => setIsCliked(true)}
+                            >
+                                play
+                            </button>
+                        ) : null}
+
+                        <button
+                            className={`${styles.banner__button} ${styles.info}`}
+                        >
+                            More Infomation
+                        </button>
+                    </div>
+                    <h1 className={styles.banner__description}>
+                        {truncate(movie.overview, 100)}
+                    </h1>
                 </div>
-                <h1 className={styles.banner__description}>
-                    {truncate(movie.overview, 100)}
-                </h1>
-            </div>
-            <div className={styles.fadeBottom} />
-        </Banner>
-    );
+                <div className={styles.fadeBottom} />
+            </Banner>
+        );
+    } else {
+        return (
+            <Container>
+                <HomeContainer>
+                    <Iframe
+                        width="640"
+                        height="360"
+                        src={`http://youtube.com/embed/${movie.videos.results[0].key}?controls=0&autoplay=1&loop=1&mute=0&playlist=${movie.videos.results[0].key}`}
+                        frameBorder="0"
+                        allow="autoplay; fullscreen"
+                        allowFullScreen
+                    ></Iframe>
+                </HomeContainer>
+            </Container>
+        );
+    }
 };
 
 export default MainBanner;
