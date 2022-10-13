@@ -72,7 +72,7 @@ const MainBanner = () => {
             params: { append_to_response: 'videos' },
         });
         setMovie(movieDetail);
-        console.log(movieDetail);
+        // console.log(movieDetail);
         setBackground(
             'https://image.tmdb.org/t/p/original/' + movieDetail.backdrop_path
         );
