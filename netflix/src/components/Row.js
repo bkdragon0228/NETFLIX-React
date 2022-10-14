@@ -20,7 +20,15 @@ const Row = ({ title, fetchUrl, isLargeRow, id }) => {
             <h2>{title}</h2>
             <div className={styles.slider}>
                 <div className={styles.slider__arrowLeft}>
-                    <span className={styles.arrow}>{'<'}</span>
+                    <span
+                        className={styles.arrow}
+                        onClick={() => {
+                            document.getElementById(id).scrollLeft -=
+                                window.innerWidth - 80;
+                        }}
+                    >
+                        {'<'}
+                    </span>
                 </div>
                 <div id={id} className={styles.row__posters}>
                     {movies.map((movie) => {
@@ -41,7 +49,15 @@ const Row = ({ title, fetchUrl, isLargeRow, id }) => {
                     })}
                 </div>
                 <div className={styles.slider__arrowRight}>
-                    <span className={styles.arrow}>{'>'}</span>
+                    <span
+                        className={styles.arrow}
+                        onClick={() => {
+                            document.getElementById(id).scrollLeft +=
+                                window.innerWidth - 80;
+                        }}
+                    >
+                        {'>'}
+                    </span>
                 </div>
             </div>
         </section>

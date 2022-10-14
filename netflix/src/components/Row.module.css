@@ -12,7 +12,7 @@
     background-clip: content-box;
     padding: 20px 0;
     box-sizing: border-box;
-    transition: 400ms all ease-in-out;
+    transition: all 400ms ease-in-out;
     cursor: pointer;
     width: 80px;
     z-index: 1000;
@@ -29,6 +29,7 @@
 
 .arrow {
     transition: 400ms all ease-in-out;
+    font-size: 3rem;
   }
 
 .arrow:hover {
@@ -56,7 +57,7 @@
     padding: 20px 0;
     background-clip: content-box;
     box-sizing: border-box;
-    transition: 400ms all ease-in-out;
+    transition: all 400ms ease-in-out;
     cursor: pointer;
     width: 80px;
     z-index: 1000;
@@ -95,9 +96,28 @@
 }
 .row__posterLarge {
     max-height: 320px;
-  }
+    /* transition: all 200ms ease 0; */
+}
 
 .row__posterLarge:hover {
     transform: scale(1.1);
     opacity: 1;
+}
+
+/* 미디어 쿼리 */
+@media screen and (min-width: 1200px) {
+  .row__poster {
+    max-height: 160px;
+  }
+  .row__posterLarge {
+    max-height: 360px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .row__poster {
+    max-height: 100px;
+  }
+  .row__posterLarge {
+    max-height: 280px;
+  }
 }

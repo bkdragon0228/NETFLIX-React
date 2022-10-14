@@ -2,6 +2,7 @@ import requests from './api/requests';
 import MainBanner from './components/MainBanner';
 import Nav from './components/Nav';
 import Row from './components/Row';
+import Footer from './components/Footer';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 fetchUrl={requests.fetchTrending}
             />
             <Row title="Top Rated" id="TR" fetchUrl={requests.fetchTopRated} />
+            <Footer />
         </div>
     );
 }
