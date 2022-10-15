@@ -2,9 +2,13 @@ import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import styles from './Row.module.css';
+import MovieModal from './MovieModal/MovieModal';
 
 const Row = ({ title, fetchUrl, isLargeRow, id }) => {
     const [movies, setMovies] = useState([]);
+
+    const [modalOpen, setModalOpen] = useState(false); // modal 창 열지 여부
+    const [movieSelected, setMovieSelected] = useState({});
 
     useEffect(() => {
         fetchMovieData();
@@ -14,6 +18,11 @@ const Row = ({ title, fetchUrl, isLargeRow, id }) => {
         const req = await axios.get(fetchUrl);
         console.log(req);
         setMovies(req.data.results);
+    };
+
+    const handleClick = (movie) => {
+        setModalOpen(true);
+        setMovieSelected(movie);
     };
     return (
         <section className={styles.row}>
@@ -44,6 +53,7 @@ const Row = ({ title, fetchUrl, isLargeRow, id }) => {
                                         : movie.backdrop_path
                                 }`}
                                 alt={movie.name}
+                                onClick={() => handleClick(movie)}
                             />
                         );
                     })}
@@ -60,6 +70,9 @@ const Row = ({ title, fetchUrl, isLargeRow, id }) => {
                     </span>
                 </div>
             </div>
+            {modalOpen && (
+                <MovieModal {...movieSelected} setModalOpen={setModalOpen} />
+            )}
         </section>
     );
 };
