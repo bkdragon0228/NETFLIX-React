@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import requests from '../api/requests';
 import styled, { css } from 'styled-components';
 import styles from './Banner.module.css';
-import { NavLink } from 'react-router-dom';
 
 const Banner = styled.header`
     background-image: url(${(props) => props.background});

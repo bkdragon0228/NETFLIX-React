@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './Nav.module.css';
 
@@ -34,8 +35,21 @@ const Logo = styled.img`
     object-fit: contain;
 `;
 
+const NavInput = styled.input`
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: rgba(0, 0, 0, 0.382);
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    border: none;
+`;
+
 const Nav = () => {
     const [show, setShow] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.addEventListener('scroll', () => {
@@ -51,14 +65,25 @@ const Nav = () => {
         };
     }, []);
 
+    const handleChange = (e) => {
+        setSearchValue(e.target.value);
+        navigate(`/search?q=${e.target.value}`);
+    };
+
     return (
-        <Navi className={show ? styles.black : styles.white}>
+        <Navi className={show ? styles.black : styles.lowBlack}>
             <Logo
                 alt="Netflix_logo"
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/170px-Netflix_2015_logo.svg.png"
                 className="nav__logo"
-                onClick={() => window.location.reload()}
+                onClick={() => navigate('/')}
             />
+            <NavInput
+                type="text"
+                value={searchValue}
+                onChange={handleChange}
+                placeholder="영화를 검색해주세요"
+            ></NavInput>
             <Avatar
                 alt="user logged"
                 src="https://occ-0-4796-988.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABbme8JMz4rEKFJhtzpOKWFJ_6qX-0y5wwWyYvBhWS0VKFLa289dZ5zvRBggmFVWVPL2AAYE8xevD4jjLZjWumNo.png?r=a41"
