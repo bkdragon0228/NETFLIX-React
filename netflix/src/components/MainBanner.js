@@ -25,17 +25,19 @@ const Container = styled.div`
     width: 100%;
     height: 100vh;
     background-color: black;
+    z-index: 10000;
 `;
 
 const HomeContainer = styled.div`
     width: 100%;
     height: 100%;
+    background-color: rgb(0 0 0 / 71%);
 `;
 
 const Iframe = styled.iframe`
     width: 100%;
     height: 100%;
-    z-index: -1;
+    /* z-index: 10; */
     opacity: 0.65;
     border: none;
     &::after {
@@ -120,6 +122,7 @@ const MainBanner = () => {
         return (
             <Container>
                 <HomeContainer>
+                    <span onClick={() => setIsCliked(false)}>x</span>
                     <Iframe
                         width="640"
                         height="360"

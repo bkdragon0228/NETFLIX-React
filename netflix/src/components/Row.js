@@ -1,6 +1,5 @@
 import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import styles from './Row.module.css';
 import MovieModal from './MovieModal/MovieModal';
 
