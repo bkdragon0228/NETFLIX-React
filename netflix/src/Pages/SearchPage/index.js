@@ -1,10 +1,12 @@
 import axios from '../../api/axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './SearchPage.css';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const SearchPage = () => {
     const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate();
 
     const useQuery = () => {
         return new URLSearchParams(useLocation().search); //현재 url 정보 가져오기
@@ -13,15 +15,16 @@ const SearchPage = () => {
     let query = useQuery();
 
     const searchTerm = query.get('q'); // useLocation에서 원하는 부분만 가져오기
-    console.log('searchTerm', searchTerm);
+    const deboucedSearchTerm = useDebounce(searchTerm, 800);
 
     useEffect(() => {
-        if (searchTerm) {
-            fetchSearchMovie(searchTerm);
+        if (deboucedSearchTerm) {
+            fetchSearchMovie(deboucedSearchTerm);
         }
-    }, [searchTerm]);
+    }, [deboucedSearchTerm]);
 
     const fetchSearchMovie = async (searchTerm) => {
+        console.log('deboucedSearchTerm', deboucedSearchTerm);
         try {
             const req = await axios.get(
                 `/search/multi?include_adult=false&query=${searchTerm}`
@@ -46,8 +49,11 @@ const SearchPage = () => {
                             movie.backdrop_path;
 
                         return (
-                            <div className="movie">
-                                <div className="movie__column-poster">
+                            <div className="movie" key={movie.id}>
+                                <div
+                                    className="movie__column-poster"
+                                    onClick={() => navigate(`/${movie.id}`)}
+                                >
                                     <img
                                         src={movieImageURL}
                                         alt="movie"
@@ -63,14 +69,15 @@ const SearchPage = () => {
             <section className="no-results">
                 <div className="no-result__text">
                     <p>
-                        찾고자하는 검색어"{searchTerm}"에 맞는 영화가 없습니다."
+                        찾고자하는 검색어"{deboucedSearchTerm}"에 맞는 영화가
+                        없습니다."
                     </p>
                 </div>
             </section>
         );
     };
 
-    return renderSearchResults();
+    return searchTerm ? renderSearchResults() : <div></div>;
 };
 
 export default SearchPage;
